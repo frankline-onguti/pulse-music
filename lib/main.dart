@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:audio_service/audio_service.dart';
 import 'core/scanner/music_scanner.dart';
 import 'core/scanner/permission_service.dart';
 import 'core/database/song_repository.dart';
 import 'core/database/database_service.dart';
+import 'core/audio/audio_handler.dart';
+import 'pages/audio_test_page.dart';
 
-void main() {
+late final PulseAudioHandler audioHandler;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  audioHandler = await AudioService.init(
+    builder: () => PulseAudioHandler(),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.pulse.music',
+      androidNotificationChannelName: 'Pulse Playback',
+      androidNotificationOngoing: true,
+    ),
+  );
+
   runApp(const ProviderScope(child: PulseApp()));
 }
 
@@ -60,6 +76,13 @@ class _ScanTestPageState extends State<ScanTestPage> {
     debugPrint('Database verification: $count songs stored');
   }
 
+  void _goToAudioTest() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AudioTestPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +95,11 @@ class _ScanTestPageState extends State<ScanTestPage> {
             ElevatedButton(
               onPressed: scan,
               child: const Text('Scan Music'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _goToAudioTest,
+              child: const Text('Test Audio Playback'),
             ),
           ],
         ),
