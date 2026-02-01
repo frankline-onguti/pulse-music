@@ -6,6 +6,7 @@ import '../../main.dart';
 import '../../core/scanner/music_scanner.dart';
 import '../../core/scanner/permission_service.dart';
 import '../../core/database/song_repository.dart';
+import '../../shared/widgets/mini_player.dart';
 
 class LibraryPage extends ConsumerStatefulWidget {
   const LibraryPage({super.key});
@@ -81,6 +82,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
           }
 
           return ListView.separated(
+            padding: const EdgeInsets.only(bottom: 80),
             itemCount: songs.length,
             separatorBuilder: (context, index) => const Divider(height: 1),
             itemBuilder: (context, index) {
@@ -105,6 +107,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
           );
         },
       ),
+      bottomNavigationBar: const MiniPlayer(),
       floatingActionButton: FloatingActionButton(
         onPressed: _isScanning ? null : _scanMusic,
         child: _isScanning
