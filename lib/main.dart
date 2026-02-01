@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'core/scanner/music_scanner.dart';
 import 'core/scanner/permission_service.dart';
 import 'core/database/song_repository.dart';
@@ -13,6 +14,9 @@ late final PulseAudioHandler audioHandler;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  await Hive.openBox('analytics');
 
   audioHandler = await AudioService.init(
     builder: () => PulseAudioHandler(),

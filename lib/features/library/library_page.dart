@@ -7,6 +7,7 @@ import '../../core/scanner/music_scanner.dart';
 import '../../core/scanner/permission_service.dart';
 import '../../core/database/song_repository.dart';
 import '../../shared/widgets/mini_player.dart';
+import '../../pages/analytics_debug_page.dart';
 
 class LibraryPage extends ConsumerStatefulWidget {
   const LibraryPage({super.key});
@@ -61,6 +62,19 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Library'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AnalyticsDebugPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.analytics),
+          ),
+        ],
       ),
       body: library.when(
         loading: () => const Center(child: CircularProgressIndicator()),

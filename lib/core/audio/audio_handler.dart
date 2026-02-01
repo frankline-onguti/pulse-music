@@ -1,12 +1,24 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+import '../analytics/analytics_service.dart';
 
 class PulseAudioHandler extends BaseAudioHandler
     with QueueHandler, SeekHandler {
   final _player = AudioPlayer();
+  final _analytics = AnalyticsService();
 
   PulseAudioHandler() {
     _player.playbackEventStream.listen(_broadcastState);
+    
+    // Listen to playback state changes for analytics
+    playbackState.listen((state) {
+      if (state.playing && mediaItem.value != null) {
+        _analytics.logPlay(
+          songId: mediaItem.value!.id,
+          positionSeconds: state.updatePosition.inSeconds,
+        );
+      }
+    });
   }
 
   void _broadcastState(PlaybackEvent event) {
