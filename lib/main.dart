@@ -7,6 +7,7 @@ import 'core/database/song_repository.dart';
 import 'core/database/database_service.dart';
 import 'core/audio/audio_handler.dart';
 import 'pages/audio_test_page.dart';
+import 'features/library/library_page.dart';
 
 late final PulseAudioHandler audioHandler;
 
@@ -32,7 +33,7 @@ class PulseApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const ScanTestPage(),
+      home: const LibraryPage(),
     );
   }
 }
